@@ -1,0 +1,447 @@
+/* ========================================================================== */
+/*  VARIÁVEIS GLOBAIS                                                         */
+/* ========================================================================== */
+
+:root {
+  /* Cores */
+  --cor-fundo-principal: #ece4d7;
+  --cor-texto-principal: #333;
+  --cor-texto-secundario: #555;
+  --cor-barra-lateral: #ece4d7;
+  --cor-link-ativo: #c28e57;
+  --cor-borda-link-lateral: #e6c5a3;
+
+  /* Tipografia */
+  --fonte-titulo: "Playfair Display", serif;
+  --fonte-corpo: "Lora", serif;
+
+  /* Espaçamentos */
+  --margem-padrao: 60px;
+
+  /* Tamanhos */
+  --sidebar-width: 80px;
+
+  /* Animações */
+  --tempo-transicao-pagina: 0.42s;
+  --tempo-saida-pagina: 0.26s;
+}
+
+/* ========================================================================== */
+/*  RESET + ACESSIBILIDADE                                                    */
+/* ========================================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+/* Icone da navegação arredondado */
+.icon-aba {
+  border-radius: 8px;
+}
+
+/* Mantemos o foco visível — essencial para acessibilidade */
+:focus-visible {
+  outline: 3px solid var(--cor-link-ativo);
+  outline-offset: 3px;
+}
+
+/* Scrollbar */
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--cor-link-ativo) var(--cor-fundo-principal);
+}
+
+/* ========================================================================== */
+/*  TRANSIÇÃO ENTRE PÁGINAS                                                    */
+/* ========================================================================== */
+
+body {
+  animation: page-enter var(--tempo-transicao-pagina) ease forwards;
+}
+
+body.is-leaving {
+  animation: page-exit var(--tempo-saida-pagina) ease forwards;
+  pointer-events: none;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes page-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+/* ========================================================================== */
+/*  BODY E ESTRUTURA                                                           */
+/* ========================================================================== */
+
+body {
+  background-color: var(--cor-fundo-principal);
+  color: var(--cor-texto-principal);
+  font-family: var(--fonte-corpo);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-right: var(--sidebar-width);
+}
+
+/* Classes utilitárias */
+.mx-auto {
+  margin-left: var(--margem-padrao);
+  margin-right: var(--margem-padrao);
+}
+
+/* ========================================================================== */
+/*  CONTEÚDO PRINCIPAL                                                         */
+/* ========================================================================== */
+
+.container {
+  margin-top: 25vh;
+  margin-bottom: 25vh;
+}
+
+.container h1 {
+  margin-left: var(--margem-padrao);
+  font-family: var(--fonte-titulo);
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.description {
+  font-size: 1.25rem;
+  color: var(--cor-texto-secundario);
+  line-height: 1.6;
+  max-width: 650px;
+  margin: 0 var(--margem-padrao) 2.5rem;
+}
+
+/* ========================================================================== */
+/*  LINKS SOCIAIS                                                              */
+/* ========================================================================== */
+
+.social-links {
+  margin-right: 60px;
+  display: flex;
+  gap: 30px;
+  margin-left: var(--margem-padrao);
+  margin-bottom: 20px;
+}
+
+.social-links a {
+  color: var(--cor-texto-secundario);
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+  padding-left: 25px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.social-links a:hover,
+.social-links a:focus-visible {
+  color: var(--cor-link-ativo);
+}
+
+.social-links a::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 20px;
+  height: 18px;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* Ícones sociais */
+.link-instagram::before {
+  background-image: url("../icons/instagram.png");
+}
+
+.link-github::before {
+  background-image: url("../icons/github.png");
+}
+
+.link-linkedin::before {
+  background-image: url("../icons/linkedin.png");
+}
+
+.link-email-social::before {
+  background-image: url("../icons/email.png");
+}
+
+/* ========================================================================== */
+/*  SIDEBAR LATERAL                                                            */
+/* ========================================================================== */
+
+.sidebar-header {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background-color: var(--cor-barra-lateral);
+  border-left: 1px solid var(--cor-borda-link-lateral);
+  z-index: 10;
+}
+
+.menu-nav {
+  font-size: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+}
+
+.menu-nav a {
+  width: 100%;
+  height: 80px;
+  text-decoration: none;
+  color: var(--cor-texto-principal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+.menu-nav a.active-link {
+  background-color: var(--cor-barra-lateral);
+  border-left: 4px solid var(--cor-link-ativo);
+}
+
+.menu-nav a:not(.active-link):hover,
+.menu-nav a:not(.active-link):focus-visible {
+  background-color: var(--cor-borda-link-lateral);
+}
+
+.menu-nav a::before {
+  content: "";
+  width: 24px;
+  height: 24px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-bottom: 5px;
+}
+
+.menu-nav a::after {
+  content: attr(data-text);
+  font-size: 0.7rem;
+  font-family: var(--fonte-corpo);
+  color: var(--cor-texto-principal);
+  text-transform: capitalize;
+  position: absolute;
+  bottom: 10px;
+}
+
+/* Barra lateral ícones */
+.link-home::before {
+  background-image: url("../icons/home.png");
+}
+
+.link-projects::before {
+  background-image: url("../icons/gear.png");
+}
+
+.link-experience::before {
+  background-image: url("../icons/bag.png");
+}
+
+.link-contact::before {
+  background-image: url("../icons/email.png");
+}
+
+/* ========================================================================== */
+/*  LISTA DE PROJETOS                                                          */
+/* ========================================================================== */
+
+.projects-h1,
+.projects-list {
+  margin-left: var(--margem-padrao);
+  margin-right: var(--margem-padrao);
+}
+
+.projects-list article {
+  border-bottom: 1px solid var(--cor-borda-link-lateral);
+  padding-bottom: 10px;
+  margin-top: 10px;
+}
+
+.projects-list article:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.projects-list article a {
+  font-family: var(--fonte-titulo);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.projects-list article a:hover,
+.projects-list article a:focus-visible {
+  color: var(--cor-link-ativo);
+}
+
+.projects-list article p {
+  font-family: var(--fonte-corpo);
+  font-size: 1rem;
+  color: var(--cor-texto-secundario);
+  line-height: 1.5;
+}
+
+/* ========================================================================== */
+/*  SOBRE MIM / ABOUT                                                          */
+/* ========================================================================== */
+
+.about-content {
+  max-width: 800px;
+  margin-top: 2rem;
+}
+
+.about-content h2 {
+  font-family: var(--fonte-titulo);
+  font-size: 1.8rem;
+  color: var(--cor-link-ativo);
+  margin: 40px 0 15px;
+}
+
+.about-content p {
+  font-family: var(--fonte-corpo);
+  font-size: 1.15rem;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+/* ========================================================================== */
+/*  CONTATO                                                                    */
+/* ========================================================================== */
+
+.email-link {
+  font-family: var(--fonte-titulo);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--cor-link-ativo);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.email-link:hover,
+.email-link:focus-visible {
+  color: var(--cor-texto-principal);
+}
+
+/* Botão minimalista */
+.minimal-button {
+  text-decoration: none;
+  margin-left: var(--margem-padrao);
+  margin-top: 15px;
+  padding: 12px 30px;
+  border-radius: 5px;
+  background-color: transparent;
+  border: 1px solid var(--cor-texto-principal);
+  color: var(--cor-texto-principal);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.minimal-button:hover,
+.minimal-button:focus-visible {
+  background-color: var(--cor-borda-link-lateral);
+  color: var(--cor-texto-secundario);
+  border-color: var(--cor-texto-secundario);
+}
+
+/* ========================================================================== */
+/*  FOOTER                                                                     */
+/* ========================================================================== */
+
+.footer {
+  margin-top: 60vh;
+  padding: 15px 0;
+}
+
+/* ========================================================================== */
+/*  RESPONSIVO                                                                 */
+/* ========================================================================== */
+
+@media (max-width: 768px) {
+  :root {
+    --margem-padrao: 40px;
+    --sidebar-width: 60px;
+  }
+
+  .container h1 {
+    font-size: 2rem;
+  }
+
+  .description {
+    font-size: 1rem;
+  }
+
+  .social-links {
+    margin-right: 40px;
+    gap: 10px;
+  }
+
+  .projects-h1,
+  .projects-list,
+  .about-content,
+  .minimal-button,
+  .social-links a {
+    font-size: 0.9rem;
+  }
+}
+
+/* Usuários que reduzem movimento no sistema não recebem animações longas */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  body,
+  body.is-leaving {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
