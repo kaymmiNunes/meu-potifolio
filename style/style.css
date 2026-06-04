@@ -3,32 +3,19 @@
 /* ========================================================================== */
 
 :root {
-  /* Cores */
   --cor-fundo-principal: #ece4d7;
   --cor-texto-principal: #333;
   --cor-texto-secundario: #555;
   --cor-barra-lateral: #ece4d7;
   --cor-link-ativo: #c28e57;
   --cor-borda-link-lateral: #e6c5a3;
-
-  /* Tipografia */
   --fonte-titulo: "Playfair Display", serif;
   --fonte-corpo: "Lora", serif;
-
-  /* Espaçamentos */
   --margem-padrao: 60px;
-
-  /* Tamanhos */
   --sidebar-width: 80px;
-
-  /* Animações */
   --tempo-transicao-pagina: 0.42s;
   --tempo-saida-pagina: 0.26s;
 }
-
-/* ========================================================================== */
-/*  RESET + ACESSIBILIDADE                                                    */
-/* ========================================================================== */
 
 * {
   margin: 0;
@@ -37,27 +24,20 @@
   box-sizing: border-box;
 }
 
-/* Icone da navegação arredondado */
 .icon-aba {
   border-radius: 8px;
 }
 
-/* Mantemos o foco visível — essencial para acessibilidade */
 :focus-visible {
   outline: 3px solid var(--cor-link-ativo);
   outline-offset: 3px;
 }
 
-/* Scrollbar */
 html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: var(--cor-link-ativo) var(--cor-fundo-principal);
 }
-
-/* ========================================================================== */
-/*  TRANSIÇÃO ENTRE PÁGINAS                                                    */
-/* ========================================================================== */
 
 body {
   animation: page-enter var(--tempo-transicao-pagina) ease forwards;
@@ -92,10 +72,6 @@ body.is-leaving {
   }
 }
 
-/* ========================================================================== */
-/*  BODY E ESTRUTURA                                                           */
-/* ========================================================================== */
-
 body {
   background-color: var(--cor-fundo-principal);
   color: var(--cor-texto-principal);
@@ -106,15 +82,10 @@ body {
   padding-right: var(--sidebar-width);
 }
 
-/* Classes utilitárias */
 .mx-auto {
   margin-left: var(--margem-padrao);
   margin-right: var(--margem-padrao);
 }
-
-/* ========================================================================== */
-/*  CONTEÚDO PRINCIPAL                                                         */
-/* ========================================================================== */
 
 .container {
   margin-top: 25vh;
@@ -136,9 +107,9 @@ body {
   margin: 0 var(--margem-padrao) 2.5rem;
 }
 
-/* ========================================================================== */
-/*  LINKS SOCIAIS                                                              */
-/* ========================================================================== */
+.description p {
+  margin-bottom: 1.2rem;
+}
 
 .social-links {
   margin-right: 60px;
@@ -174,7 +145,6 @@ body {
   background-repeat: no-repeat;
 }
 
-/* Ícones sociais */
 .link-instagram::before {
   background-image: url("../icons/instagram.png");
 }
@@ -191,9 +161,17 @@ body {
   background-image: url("../icons/email.png");
 }
 
-/* ========================================================================== */
-/*  SIDEBAR LATERAL                                                            */
-/* ========================================================================== */
+body.home-page .link-instagram::before {
+  background-image: url("icons/instagram.png");
+}
+
+body.home-page .link-github::before {
+  background-image: url("icons/github.png");
+}
+
+body.home-page .link-linkedin::before {
+  background-image: url("icons/linkedin.png");
+}
 
 .sidebar-header {
   position: fixed;
@@ -259,7 +237,6 @@ body {
   bottom: 10px;
 }
 
-/* Barra lateral ícones */
 .link-home::before {
   background-image: url("../icons/home.png");
 }
@@ -276,9 +253,21 @@ body {
   background-image: url("../icons/email.png");
 }
 
-/* ========================================================================== */
-/*  LISTA DE PROJETOS                                                          */
-/* ========================================================================== */
+body.home-page .link-home::before {
+  background-image: url("icons/home.png");
+}
+
+body.home-page .link-projects::before {
+  background-image: url("icons/gear.png");
+}
+
+body.home-page .link-sobre::before {
+  background-image: url("icons/bag.png");
+}
+
+body.home-page .link-contact::before {
+  background-image: url("icons/email.png");
+}
 
 .projects-h1,
 .projects-list {
@@ -318,9 +307,35 @@ body {
   line-height: 1.5;
 }
 
-/* ========================================================================== */
-/*  SOBRE MIM / ABOUT                                                          */
-/* ========================================================================== */
+.project-details {
+  margin-top: 2rem;
+  max-width: 780px;
+  margin-left: var(--margem-padrao);
+  margin-right: var(--margem-padrao);
+  color: var(--cor-texto-secundario);
+  line-height: 1.7;
+  font-size: 1.1rem;
+}
+
+.project-details h2 {
+  font-family: var(--fonte-titulo);
+  color: var(--cor-link-ativo);
+  font-size: 1.6rem;
+  margin: 2rem 0 1rem;
+}
+
+.project-details p {
+  margin-bottom: 1rem;
+}
+
+.project-details ul {
+  margin-left: 1.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.project-details li {
+  margin-bottom: 0.5rem;
+}
 
 .about-content {
   max-width: 800px;
@@ -341,10 +356,6 @@ body {
   margin-bottom: 20px;
 }
 
-/* ========================================================================== */
-/*  CONTATO                                                                    */
-/* ========================================================================== */
-
 .email-link {
   font-family: var(--fonte-titulo);
   font-size: 2rem;
@@ -359,7 +370,6 @@ body {
   color: var(--cor-texto-principal);
 }
 
-/* Botão minimalista */
 .minimal-button {
   text-decoration: none;
   margin-left: var(--margem-padrao);
@@ -382,18 +392,10 @@ body {
   border-color: var(--cor-texto-secundario);
 }
 
-/* ========================================================================== */
-/*  FOOTER                                                                     */
-/* ========================================================================== */
-
 .footer {
   margin-top: 60vh;
   padding: 15px 0;
 }
-
-/* ========================================================================== */
-/*  RESPONSIVO                                                                 */
-/* ========================================================================== */
 
 @media (max-width: 768px) {
   :root {
@@ -412,6 +414,7 @@ body {
   .social-links {
     margin-right: 40px;
     gap: 10px;
+    flex-wrap: wrap;
   }
 
   .projects-h1,
@@ -421,9 +424,12 @@ body {
   .social-links a {
     font-size: 0.9rem;
   }
+
+  .project-details {
+    font-size: 1rem;
+  }
 }
 
-/* Usuários que reduzem movimento no sistema não recebem animações longas */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

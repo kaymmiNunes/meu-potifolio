@@ -27,36 +27,27 @@ function normalizePath(path) {
   return path.replace(/\/index\.html$/, "/");
 }
 
-function getCurrentSection(path) {
+function getSectionFromPath(path) {
   const normalizedPath = normalizePath(path);
   const segments = normalizedPath.split("/").filter(Boolean);
 
-  // Remove o nome do repositório quando estiver no GitHub Pages.
-  // Exemplo: /meu-portfolio/sobre/ -> /sobre/
+  // Remove o nome do repositório quando o site estiver no GitHub Pages.
+  // Exemplo: /meu-portfolio/projetos/ -> /projetos/
   if (segments[0] === "meu-portfolio") {
     segments.shift();
   }
 
-  const firstSegment = segments[0] || "";
-  const lastSegment = segments[segments.length - 1] || "index.html";
+  const firstSegment = segments[0];
 
-  if (
-    firstSegment === "projetos" ||
-    lastSegment === "projects.html" ||
-    lastSegment.startsWith("projects")
-  ) {
+  if (firstSegment === "projetos") {
     return "projects";
   }
 
-  if (
-    firstSegment === "sobre" ||
-    lastSegment === "sobremim.html" ||
-    lastSegment === "experience.html"
-  ) {
+  if (firstSegment === "sobre") {
     return "about";
   }
 
-  if (firstSegment === "contato" || lastSegment === "contact.html") {
+  if (firstSegment === "contato") {
     return "contact";
   }
 
@@ -64,11 +55,11 @@ function getCurrentSection(path) {
 }
 
 function updateActiveMenuLink() {
-  const currentSection = getCurrentSection(window.location.pathname);
+  const currentSection = getSectionFromPath(window.location.pathname);
 
   menuLinks.forEach((link) => {
     const linkUrl = new URL(link.getAttribute("href"), window.location.href);
-    const linkSection = getCurrentSection(linkUrl.pathname);
+    const linkSection = getSectionFromPath(linkUrl.pathname);
 
     if (currentSection === linkSection) {
       link.classList.add("active-link");
@@ -106,29 +97,13 @@ window.addEventListener("load", showElementsOnScroll);
 const prefetchedPages = new Set();
 
 function getSiteBaseUrl() {
-  const path = window.location.pathname;
+  const pathname = window.location.pathname;
+  const projectFolder = "/meu-portfolio/";
 
-  // GitHub Pages:
-  // /meu-portfolio/
-  // /meu-portfolio/sobre/
-  // /meu-portfolio/contato/
-  if (path.includes("/meu-portfolio/")) {
-    return `${window.location.origin}/meu-portfolio/`;
+  if (pathname.includes(projectFolder)) {
+    return `${window.location.origin}${projectFolder}`;
   }
 
-  // Estrutura antiga:
-  // /pages/projects.html
-  // /pages/sobremim.html
-  // /pages/contact.html
-  if (path.includes("/pages/")) {
-    return `${window.location.origin}${path.split("/pages/")[0]}/`;
-  }
-
-  // Domínio próprio ou Cloudflare:
-  // /
-  // /sobre/
-  // /contato/
-  // /projetos/
   return `${window.location.origin}/`;
 }
 
@@ -156,10 +131,7 @@ function isVeryLimitedConnection() {
 }
 
 function isInternalPage(url) {
-  return (
-    url.origin === window.location.origin &&
-    (url.pathname.endsWith(".html") || url.pathname.endsWith("/"))
-  );
+  return url.origin === window.location.origin;
 }
 
 function prefetchPage(pageUrl) {
@@ -231,7 +203,7 @@ window.addEventListener("load", () => {
   runWhenBrowserIsIdle(preloadInternalPages);
 });
 
-// Pré-carrega um link quando o usuário demonstra intenção de acessá-lo.
+// Pré-carrega um link quando o usuário demonstra intenção de acessá-lo
 document.querySelectorAll("a[href]").forEach((link) => {
   const prepareLink = () => {
     prefetchPage(link.href);

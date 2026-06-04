@@ -1,4 +1,4 @@
-## Portfólio - Kaymmi Nunes
+# Portfólio - Kaymmi Nunes
 
 Portfólio pessoal desenvolvido com HTML, CSS e JavaScript para apresentar meus projetos, experiências e formas de contato.
 
@@ -18,16 +18,28 @@ Portfólio pessoal desenvolvido com HTML, CSS e JavaScript para apresentar meus 
 - Página de contato
 - Layout responsivo
 - Navegação lateral
+- URLs limpas sem `.html`
+- Pré-carregamento inteligente de páginas internas
+- Transições suaves entre páginas
+
+## Estrutura de páginas
+
+- `/` - Página inicial
+- `/projetos/` - Lista de projetos
+- `/sobre/` - Sobre Mim
+- `/contato/` - Contato
+- `/projetos/irrigacao/` - Projeto de irrigação
+- `/projetos/irrigacao-inteligente/` - Projeto de irrigação inteligente
+- `/projetos/haven-cafeteria/` - Projeto Haven Cafeteria
 
 ## Projetos em destaque
 
-- Sistema de Irrigação Inteligente
 - Sistema de Controle e Monitoramento de Irrigação
+- Sistema de Irrigação Inteligente com Monitoramento Remoto de Variáveis
 - Haven Cafeteria
 
 ## Autor
 
 Kaymmi Nunes  
-
-## Acesse meu portifolio em: **https://meu-potfolio.kaymmiknb.workers.dev/**
-
+GitHub: @kaymmiNunes  
+LinkedIn: kaymminunes
