@@ -17,36 +17,73 @@ function scrollToSection(id) {
   }
 }
 
-// Marca automaticamente o link ativo no menu de acordo com a página atual
+// ------------------------------
+// Menu ativo
+// ------------------------------
+
 const menuLinks = document.querySelectorAll(".menu-nav a");
 
+function normalizePath(path) {
+  return path.replace(/\/index\.html$/, "/");
+}
+
+function getCurrentSection(path) {
+  const normalizedPath = normalizePath(path);
+  const segments = normalizedPath.split("/").filter(Boolean);
+
+  // Remove o nome do repositório quando estiver no GitHub Pages.
+  // Exemplo: /meu-portfolio/sobre/ -> /sobre/
+  if (segments[0] === "meu-portfolio") {
+    segments.shift();
+  }
+
+  const firstSegment = segments[0] || "";
+  const lastSegment = segments[segments.length - 1] || "index.html";
+
+  if (
+    firstSegment === "projetos" ||
+    lastSegment === "projects.html" ||
+    lastSegment.startsWith("projects")
+  ) {
+    return "projects";
+  }
+
+  if (
+    firstSegment === "sobre" ||
+    lastSegment === "sobremim.html" ||
+    lastSegment === "experience.html"
+  ) {
+    return "about";
+  }
+
+  if (firstSegment === "contato" || lastSegment === "contact.html") {
+    return "contact";
+  }
+
+  return "home";
+}
+
 function updateActiveMenuLink() {
-  const currentPage = window.location.pathname.split("/").pop() || "index.html";
+  const currentSection = getCurrentSection(window.location.pathname);
 
   menuLinks.forEach((link) => {
-    const linkPage = link.getAttribute("href").split("/").pop();
+    const linkUrl = new URL(link.getAttribute("href"), window.location.href);
+    const linkSection = getCurrentSection(linkUrl.pathname);
 
-    const isHomePage = currentPage === "index.html" && linkPage === "index.html";
-
-    const isProjectsPage =
-      currentPage.startsWith("projects") && linkPage === "projects.html";
-
-    const isAboutPage =
-      currentPage === "sobremim.html" && linkPage === "sobremim.html";
-
-    const isContactPage =
-      currentPage === "contact.html" && linkPage === "contact.html";
-
-    if (isHomePage || isProjectsPage || isAboutPage || isContactPage) {
+    if (currentSection === linkSection) {
       link.classList.add("active-link");
     } else {
       link.classList.remove("active-link");
     }
   });
 }
+
 updateActiveMenuLink();
 
-// Efeito de aparição suave para elementos com a classe .fade-up
+// ------------------------------
+// Efeito fade-up
+// ------------------------------
+
 const faders = document.querySelectorAll(".fade-up");
 
 function showElementsOnScroll() {
@@ -62,12 +99,6 @@ function showElementsOnScroll() {
 window.addEventListener("scroll", showElementsOnScroll);
 window.addEventListener("load", showElementsOnScroll);
 
-// Adiciona uma classe quando a página termina de carregar.
-// Útil para aplicar transições suaves via CSS.
-window.addEventListener("load", () => {
-  document.body.classList.add("page-loaded");
-});
-
 // ------------------------------
 // Pré-carregamento inteligente
 // ------------------------------
@@ -77,17 +108,28 @@ const prefetchedPages = new Set();
 function getSiteBaseUrl() {
   const path = window.location.pathname;
 
-  // Quando estiver dentro da pasta /pages/, volta para a raiz do projeto.
-  // Exemplo:
-  // /meu-potifolio/pages/projects.html -> /meu-potifolio/
+  // GitHub Pages:
+  // /meu-portfolio/
+  // /meu-portfolio/sobre/
+  // /meu-portfolio/contato/
+  if (path.includes("/meu-portfolio/")) {
+    return `${window.location.origin}/meu-portfolio/`;
+  }
+
+  // Estrutura antiga:
+  // /pages/projects.html
+  // /pages/sobremim.html
+  // /pages/contact.html
   if (path.includes("/pages/")) {
     return `${window.location.origin}${path.split("/pages/")[0]}/`;
   }
 
-  // Quando estiver na raiz do projeto.
-  // Exemplo:
-  // /meu-potifolio/index.html -> /meu-potifolio/
-  return `${window.location.origin}${path.substring(0, path.lastIndexOf("/") + 1)}`;
+  // Domínio próprio ou Cloudflare:
+  // /
+  // /sobre/
+  // /contato/
+  // /projetos/
+  return `${window.location.origin}/`;
 }
 
 function getConnectionInfo() {
@@ -156,17 +198,16 @@ function runWhenBrowserIsIdle(callback) {
 function preloadInternalPages() {
   const siteBaseUrl = getSiteBaseUrl();
 
-const knownPages = [
-  "./",
-  "projetos/",
-  "sobre/",
-  "contato/",
-  "projetos/irrigacao/",
-  "projetos/irrigacao-inteligente/",
-  "projetos/haven-cafeteria/",
-].map((page) => new URL(page, siteBaseUrl).href);
+  const knownPages = [
+    "./",
+    "projetos/",
+    "sobre/",
+    "contato/",
+    "projetos/irrigacao/",
+    "projetos/irrigacao-inteligente/",
+    "projetos/haven-cafeteria/",
+  ].map((page) => new URL(page, siteBaseUrl).href);
 
-  // Também pega automaticamente os links internos existentes na página atual.
   const detectedPages = Array.from(document.querySelectorAll("a[href]"))
     .map((link) => new URL(link.getAttribute("href"), window.location.href))
     .filter(isInternalPage)
@@ -186,7 +227,6 @@ const knownPages = [
   }, initialDelay);
 }
 
-// Pré-carrega as páginas depois que a página principal já terminou de carregar.
 window.addEventListener("load", () => {
   runWhenBrowserIsIdle(preloadInternalPages);
 });
@@ -202,16 +242,31 @@ document.querySelectorAll("a[href]").forEach((link) => {
   link.addEventListener("focus", prepareLink, { once: true });
 });
 
-// Aplica animação de saída antes de navegar para links internos
+// ------------------------------
+// Transição de saída entre páginas
+// ------------------------------
+
 document.querySelectorAll("a[href]").forEach((link) => {
   link.addEventListener("click", (event) => {
+    const rawHref = link.getAttribute("href");
     const url = new URL(link.href, window.location.href);
 
     const isInternalLink = url.origin === window.location.origin;
     const isSamePage = url.href === window.location.href;
     const opensInNewTab = link.target === "_blank";
+    const isAnchorLink = rawHref.startsWith("#");
+    const isDownload = link.hasAttribute("download");
+    const isMailOrPhone =
+      url.protocol === "mailto:" || url.protocol === "tel:";
 
-    if (!isInternalLink || isSamePage || opensInNewTab) {
+    if (
+      !isInternalLink ||
+      isSamePage ||
+      opensInNewTab ||
+      isAnchorLink ||
+      isDownload ||
+      isMailOrPhone
+    ) {
       return;
     }
 
