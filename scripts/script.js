@@ -156,17 +156,15 @@ function runWhenBrowserIsIdle(callback) {
 function preloadInternalPages() {
   const siteBaseUrl = getSiteBaseUrl();
 
-  // Lista das páginas conhecidas do portfólio.
-  // Se criar novas páginas no futuro, adicione aqui.
-  const knownPages = [
-    "index.html",
-    "pages/projects.html",
-    "pages/sobremim.html",
-    "pages/contact.html",
-    "pages/projects1.html",
-    "pages/projects2.html",
-    "pages/projects3.html",
-  ].map((page) => new URL(page, siteBaseUrl).href);
+const knownPages = [
+  "./",
+  "projetos/",
+  "sobre/",
+  "contato/",
+  "projetos/irrigacao/",
+  "projetos/irrigacao-inteligente/",
+  "projetos/haven-cafeteria/",
+].map((page) => new URL(page, siteBaseUrl).href);
 
   // Também pega automaticamente os links internos existentes na página atual.
   const detectedPages = Array.from(document.querySelectorAll("a[href]"))

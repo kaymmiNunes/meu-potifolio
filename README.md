@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-# Portfólio - Kaymmi Nunes
+## Portfólio - Kaymmi Nunes
 
 Portfólio pessoal desenvolvido com HTML, CSS e JavaScript para apresentar meus projetos, experiências e formas de contato.
 
@@ -29,9 +28,6 @@ Portfólio pessoal desenvolvido com HTML, CSS e JavaScript para apresentar meus 
 ## Autor
 
 Kaymmi Nunes  
-GitHub: @kaymmiNunes  
-LinkedIn: kaymminunes
 
-=======
-### Acesse meu portifolio em: **https://meu-potifolio.kaymmiknb.workers.dev/**
->>>>>>> bde6c97598a4beead83864814eaacc5b47801e25
+## Acesse meu portifolio em: **https://meu-potfolio.kaymmiknb.workers.dev/**
+
