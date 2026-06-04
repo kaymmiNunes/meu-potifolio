@@ -15,7 +15,7 @@ Portfólio pessoal desenvolvido com HTML, CSS e JavaScript para apresentar meus 
 
 - Página inicial com apresentação profissional
 - Página de projetos
-- Página de experiência
+- Página Sobre Mim
 - Página de contato
 - Layout responsivo
 - Navegação lateral

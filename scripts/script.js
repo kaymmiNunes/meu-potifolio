@@ -26,14 +26,24 @@ function updateActiveMenuLink() {
   menuLinks.forEach((link) => {
     const linkPage = link.getAttribute("href").split("/").pop();
 
-    if (linkPage === currentPage) {
+    const isHomePage = currentPage === "index.html" && linkPage === "index.html";
+
+    const isProjectsPage =
+      currentPage.startsWith("projects") && linkPage === "projects.html";
+
+    const isAboutPage =
+      currentPage === "sobremim.html" && linkPage === "sobremim.html";
+
+    const isContactPage =
+      currentPage === "contact.html" && linkPage === "contact.html";
+
+    if (isHomePage || isProjectsPage || isAboutPage || isContactPage) {
       link.classList.add("active-link");
     } else {
       link.classList.remove("active-link");
     }
   });
 }
-
 updateActiveMenuLink();
 
 // Efeito de aparição suave para elementos com a classe .fade-up
@@ -151,7 +161,7 @@ function preloadInternalPages() {
   const knownPages = [
     "index.html",
     "pages/projects.html",
-    "pages/experience.html",
+    "pages/sobremim.html",
     "pages/contact.html",
     "pages/projects1.html",
     "pages/projects2.html",
@@ -192,4 +202,26 @@ document.querySelectorAll("a[href]").forEach((link) => {
   link.addEventListener("mouseenter", prepareLink, { once: true });
   link.addEventListener("touchstart", prepareLink, { once: true });
   link.addEventListener("focus", prepareLink, { once: true });
+});
+
+// Aplica animação de saída antes de navegar para links internos
+document.querySelectorAll("a[href]").forEach((link) => {
+  link.addEventListener("click", (event) => {
+    const url = new URL(link.href, window.location.href);
+
+    const isInternalLink = url.origin === window.location.origin;
+    const isSamePage = url.href === window.location.href;
+    const opensInNewTab = link.target === "_blank";
+
+    if (!isInternalLink || isSamePage || opensInNewTab) {
+      return;
+    }
+
+    event.preventDefault();
+    document.body.classList.add("is-leaving");
+
+    setTimeout(() => {
+      window.location.href = url.href;
+    }, 260);
+  });
 });
